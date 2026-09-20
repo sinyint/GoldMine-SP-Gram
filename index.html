@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ရွှေချိန် SP ကျွတ်နှုန်း Gram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+box-sizing: border-box;
+font-family: 'Inter', 'Padauk', sans-serif;
+}
+
+body {
+margin: 0;
+padding: 12px;
+background: #0b1120;
+color: #f1f5f9;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+}
+
+.calc-card {
+width: 100%;
+max-width: 480px;
+background: #162032;
+border-radius: 16px;
+padding: 20px;
+box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+border: 1px solid #24334d;
+}
+
+.title {
+text-align: center;
+color: #facc15;
+font-size: 20px;
+margin: 0 0 14px 0;
+font-weight: 700;
+}
+
+.field { margin-bottom: 10px; }
+
+.field label {
+display: block;
+font-size: 13px;
+color: #94a3b8;
+margin-bottom: 4px;
+font-weight: 700;
+}
+
+select, input {
+width: 100%;
+padding: 9px 12px;
+border-radius: 8px;
+border: 1px solid #24334d;
+background: #0b1120;
+color: #ffffff;
+font-size: 14px;
+font-weight: 600;
+outline: none;
+}
+
+select { color: #38bdf8; font-size: 13px; }
+
+/* မီးလင်းစျေး (အဝါရောင်) */
+.yellow-label { color: #facc15 !important; }
+.yellow-input { border-color: #eab308 !important; color: #fef08a !important; }
+.yellow-input:focus { border-color: #facc15 !important; box-shadow: 0 0 8px rgba(250, 204, 21, 0.4); }
+.yellow-input::placeholder { color: #facc15; opacity: 0.6; }
+
+/* ကျွတ်နှုန်း (အနီရောင်) */
+.red-label { color: #f87171 !important; }
+.red-input { border-color: #ef4444 !important; color: #fca5a5 !important; }
+.red-input:focus { border-color: #dc2626 !important; box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+.red-input::placeholder { color: #f87171; opacity: 0.7; }
+
+/* တွင်းထွက်စျေး (ခရမ်းရောင်) */
+.purple-label { color: #c084fc !important; }
+.purple-input { border-color: #a855f7 !important; color: #e9d5ff !important; }
+.purple-input:focus { border-color: #c084fc !important; box-shadow: 0 0 8px rgba(192, 132, 252, 0.4); }
+.purple-input::placeholder { color: #c084fc; opacity: 0.7; }
+
+/* Gram (အစိမ်းရောင်) */
+.green-label { color: #34d399 !important; }
+.green-input { border-color: #10b981 !important; color: #a7f3d0 !important; }
+.green-input:focus { border-color: #34d399 !important; box-shadow: 0 0 8px rgba(52, 211, 153, 0.4); }
+.green-input::placeholder { color: #34d399; opacity: 0.7; }
+
+/* SP / စက်ပွိုင့် (အပြာရောင်) */
+.blue-label { color: #38bdf8 !important; }
+.blue-input { border-color: #0284c7 !important; color: #bae6fd !important; }
+.blue-input:focus { border-color: #38bdf8 !important; box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
+.blue-input::placeholder { color: #38bdf8; opacity: 0.7; }
+
+.grid-2 {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 10px;
+}
+
+.kpy-grid {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 8px;
+margin-bottom: 12px;
+}
+
+.kpy-box { text-align: center; }
+.kpy-box .lbl-kyat { display: block; font-size: 13px; color: #38bdf8; margin-bottom: 4px; font-weight: 700; }
+.kpy-box .lbl-pe { display: block; font-size: 13px; color: #34d399; margin-bottom: 4px; font-weight: 700; }
+.kpy-box .lbl-yew { display: block; font-size: 13px; color: #facc15; margin-bottom: 4px; font-weight: 700; }
+.kpy-box input { text-align: center; font-size: 15px; }
+
+.main-res {
+background: #0b1120;
+border-radius: 10px;
+padding: 12px 14px;
+border: 1px solid #24334d;
+margin-bottom: 12px;
+}
+
+.res-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 6px;
+}
+
+.res-row:last-child { margin-bottom: 0; }
+.res-lbl { font-size: 13px; color: #94a3b8; font-weight: 500; }
+
+.val-gold { color: #facc15; font-weight: 700; font-size: 14px; }
+.val-emerald { color: #34d399; font-weight: 700; font-size: 14px; }
+.val-white { color: #ffffff; font-weight: 700; font-size: 13px; }
+
+.cmp-wrap {
+background: #0b1120;
+border-radius: 10px;
+padding: 10px 12px;
+border: 1px solid #24334d;
+margin-bottom: 12px;
+}
+
+.cmp-head {
+font-size: 13px;
+color: #facc15;
+margin-bottom: 8px;
+text-align: center;
+font-weight: 700;
+}
+
+.cmp-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #162032;
+padding: 6px 10px;
+border-radius: 6px;
+margin-bottom: 5px;
+}
+
+.cmp-item:last-child { margin-bottom: 0; }
+.cmp-tag { font-size: 12px; color: #38bdf8; font-weight: 700; }
+.cmp-val { font-size: 13px; color: #facc15; font-weight: 700; }
+.cmp-sub { font-size: 12px; color: #34d399; margin-left: 4px; }
+
+.section-divider {
+border: 0;
+border-top: 1px dashed #24334d;
+margin: 14px 0;
+}
+
+/* သီးသန့် ရွေးတွက်စက် ကဒ်ဒီဇိုင်းများ */
+.standalone-box {
+background: #0d172a;
+border: 1px solid #1e293b;
+border-radius: 12px;
+padding: 10px;
+}
+
+.standalone-title {
+font-size: 12px;
+font-weight: 700;
+text-align: center;
+margin-bottom: 8px;
+padding-bottom: 4px;
+border-bottom: 1px solid #1e293b;
+}
+
+.mini-input-grid {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 4px;
+margin-bottom: 8px;
+}
+
+.mini-input-grid input {
+padding: 6px 4px;
+font-size: 12px;
+text-align: center;
+}
+
+.standalone-result-box {
+background: #0b1120;
+border: 1px solid #24334d;
+border-radius: 8px;
+padding: 4px 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 4px;
+}
+
+.standalone-result-box input {
+border: none !important;
+background: transparent !important;
+text-align: right;
+font-size: 15px;
+font-weight: 700;
+padding: 4px 0;
+outline: none !important;
+box-shadow: none !important;
+width: 70%;
+}
+
+.standalone-result-box span {
+font-size: 13px;
+font-weight: 700;
+white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="calc-card">
+<!-- ၁။ ခေါင်းစဉ် -->
+<div class="title">ရွှေချိန် SP ကျွတ်နှုန်း Gram</div>
+
+<!-- ၂။ အလေးချိန်စံနှုန်းရွေးရန် -->
+<div class="field">
+<label>အလေးချိန်စံနှုန်းရွေးပါ</label>
+<select id="gramStandard" onchange="autoCalcRawPrice(); calculateFromKPY();">
+<option value="1">16.6 Gram (120 ရွေး)</option>
+<option value="2" selected>16.606 Gram (128 ရွေး)</option>
+<option value="3">16.329325 Gram (128 ရွေး)</option>
+</select>
+</div>
+
+<!-- ၃။ မီးလင်းရွှေဈေး (အဝါ) + ကျွတ်နှုန်း(ရွေး) (အနီ) -->
+<div class="grid-2">
+<div class="field" style="margin-bottom:0;">
+<label class="yellow-label">မီးလင်းရွှေဈေး</label>
+<input type="number" id="goldPrice" class="yellow-input" placeholder="မီးလင်းဈေး" oninput="autoCalcRawPrice(); calculateFromKPY();">
+</div>
+<div class="field" style="margin-bottom:0;">
+<label class="red-label">ကျွတ်နှုန်း (ရွေး)</label>
+<input type="number" id="wasteYew" class="red-input" placeholder="ရွှေကျွတ်နှုန်းထည့်ရန်" oninput="autoCalcRawPrice(); calculateFromKPY();">
+</div>
+</div>
+
+<!-- ၄။ တွင်းထွက်ရွှေဈေး (ခရမ်း) + Gram အလေးချိန် (အစိမ်း) -->
+<div class="grid-2">
+<div class="field" style="margin-bottom:0;">
+<label class="purple-label">တွင်းထွက်ရွှေဈေး</label>
+<input type="number" id="rawPrice" class="purple-input" placeholder="အကြမ်းဈေး" oninput="calculateFromKPY()">
+</div>
+<div class="field" style="margin-bottom:0;">
+<label class="green-label">Gram အလေးချိန်</label>
+<input type="number" id="inputGram" class="green-input" placeholder="Gram ပမာဏ" oninput="calculateFromGram()">
+</div>
+</div>
+
+<!-- ၅။ တွင်းထွက်ရွှေ အလေးချိန် ထည့်ရန် -->
+<div class="field" style="margin-top: 10px; margin-bottom: 2px;">
+<label class="purple-label">တွင်းထွက်ရွှေ အလေးချိန် ထည့်ရန်</label>
+</div>
+<div class="kpy-grid">
+<div class="kpy-box">
+<span class="lbl-kyat">ကျပ်</span>
+<input type="number" id="kyat" placeholder="၀" oninput="calculateFromKPY(); calcWasteRateFromNet();">
+</div>
+<div class="kpy-box">
+<span class="lbl-pe">ပဲ</span>
+<input type="number" id="pe" placeholder="၀" oninput="calculateFromKPY(); calcWasteRateFromNet();">
+</div>
+<div class="kpy-box">
+<span class="lbl-yew">ရွေး</span>
+<input type="number" id="yew" placeholder="၀" oninput="calculateFromKPY(); calcWasteRateFromNet();">
+</div>
+</div>
+
+<!-- ၆။ မီးလင်းရွှေ အလေးချိန် ထည့်ရန် -->
+<div class="field" style="margin-bottom: 2px;">
+<label class="yellow-label">မီးလင်းရွှေ အလေးချိန် ထည့်ရန်</label>
+</div>
+<div class="kpy-grid">
+<div class="kpy-box">
+<span class="lbl-kyat">ကျပ်</span>
+<input type="number" id="netK" placeholder="၀" oninput="calcWasteRateFromNet()">
+</div>
+<div class="kpy-box">
+<span class="lbl-pe">ပဲ</span>
+<input type="number" id="netP" placeholder="၀" oninput="calcWasteRateFromNet()">
+</div>
+<div class="kpy-box">
+<span class="lbl-yew">ရွေး</span>
+<input type="number" id="netY" placeholder="၀" oninput="calcWasteRateFromNet()">
+</div>
+</div>
+
+<!-- ၇။ အဖြေပြကွက် -->
+<div class="main-res">
+<div class="res-row">
+<span class="res-lbl">မီးလင်းချွတ်ပြီး ရွှေချိန်</span>
+<span class="val-gold" id="netKpy">၀ကျပ် ၀ပဲ ၀ရွေး</span>
+</div>
+<hr style="border: 0; border-top: 1px solid #24334d; margin: 6px 0;">
+<div class="res-row">
+<span class="res-lbl">Gram အလေးချိန်</span>
+<span class="val-emerald" id="mainGram">0.000 g</span>
+</div>
+<div class="res-row">
+<span class="res-lbl">ကျသင့်ငွေ (တွင်းထွက်ဈေး)</span>
+<span class="val-white" id="rawTotalPrice">0 ကျပ်</span>
+</div>
+<div class="res-row">
+<span class="res-lbl">ကျသင့်ငွေ (မီးလင်းဈေး)</span>
+<span class="val-white" id="mainPrice">0 ကျပ်</span>
+</div>
+</div>
+
+<!-- ၈။ အခြားအလေးချိန် နှိုင်းယှဉ်ချက် -->
+<div class="cmp-wrap">
+<div class="cmp-head">အခြားအလေးချိန် နှိုင်းယှဉ်ချက်</div>
+
+<div class="cmp-item">
+<span class="cmp-tag" id="cLabel1">16.6g</span>
+<div>
+<span class="cmp-val" id="cKpy1">၀ကျပ် ၀ပဲ ၀ရွေး</span>
+<span class="cmp-sub" id="cGram1">(0.00g)</span>
+</div>
+</div>
+
+<div class="cmp-item">
+<span class="cmp-tag" id="cLabel2">16.329g</span>
+<div>
+<span class="cmp-val" id="cKpy2">၀ကျပ် ၀ပဲ ၀ရွေး</span>
+<span class="cmp-sub" id="cGram2">(0.00g)</span>
+</div>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ၉။ SP (စက်ပွင့်) မှ ကျွတ်နှုန်း တွက်နည်း -->
+<div class="field" style="margin-bottom: 6px;">
+<label class="blue-label" style="font-size: 13px;">★ SP (စက်ပွင့်) မှ ကျွတ်နှုန်း တွက်နည်း</label>
+</div>
+<div class="grid-2">
+<div class="field" style="margin-bottom:0;">
+<label class="blue-label">SP (စက်ပွင့်) ထည့်ရန်</label>
+<input type="number" id="spInput" class="blue-input" placeholder="ဥပမာ- 18.95" step="0.01" oninput="calcSpToWasteRate()">
+</div>
+<div class="field" style="margin-bottom:0;">
+<label class="red-label">ရွှေကျွတ်မည့်နှုန်းထား</label>
+<input type="text" id="spResult" class="red-input" placeholder="Auto တွက်မည်" readonly style="background: #111827; text-align: center;">
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ၁၀။ နှစ်ဖက်ရ တွက်စက် (ကျပ်/ပဲ/ရွေး <-> ရွေး) -->
+<div class="field" style="margin-bottom: 6px;">
+<label class="green-label" style="font-size: 13px;">★ ကျပ်/ပဲ/ရွေး စုစုပေါင်းမှ "ရွေး" သို့ပြောင်းနည်း</label>
+</div>
+
+<div class="grid-2">
+<!-- ဘက်ဘောင် ၁: ၁၂၈ ရွေး -->
+<div class="standalone-box">
+<div class="standalone-title green-label">၁ ကျပ် = ၁၂၈ ရွေး</div>
+<div class="mini-input-grid">
+<input type="number" id="st128_k" placeholder="ကျပ်" oninput="calcKPYtoYew128()">
+<input type="number" id="st128_p" placeholder="ပဲ" oninput="calcKPYtoYew128()">
+<input type="number" id="st128_y" placeholder="ရွေး" oninput="calcKPYtoYew128()">
+</div>
+<div class="standalone-result-box">
+<input type="number" id="res128_yew" placeholder="0" style="color: #facc15;" oninput="calcYewtoKPY128()">
+<span style="color: #facc15;">ရွေး</span>
+</div>
+</div>
+
+<!-- ဘက်ဘောင် ၂: ၁၂၀ ရွေး -->
+<div class="standalone-box">
+<div class="standalone-title yellow-label">၁ ကျပ် = ၁၂၀ ရွေး</div>
+<div class="mini-input-grid">
+<input type="number" id="st120_k" placeholder="ကျပ်" oninput="calcKPYtoYew120()">
+<input type="number" id="st120_p" placeholder="ပဲ" oninput="calcKPYtoYew120()">
+<input type="number" id="st120_y" placeholder="ရွေး" oninput="calcKPYtoYew120()">
+</div>
+<div class="standalone-result-box">
+<input type="number" id="res120_yew" placeholder="0" style="color: #38bdf8;" oninput="calcYewtoKPY120()">
+<span style="color: #38bdf8;">ရွေး</span>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+/* ----------------၁၂၈ ရွေး အတွက် တွက်ချက်မှုများ---------------- */
+// ကျပ်၊ ပဲ၊ ရွေး ရိုက်ပါက -> စုစုပေါင်း ရွေး ထွက်မည်
+function calcKPYtoYew128() {
+let k = parseFloat(document.getElementById('st128_k').value) || 0;
+let p = parseFloat(document.getElementById('st128_p').value) || 0;
+let y = parseFloat(document.getElementById('st128_y').value) || 0;
+
+let totalYew = (k * 128) + (p * 8) + y;
+document.getElementById('res128_yew').value = totalYew ? parseFloat(totalYew.toFixed(3)) : '';
+}
+
+// ရွေး အကွက်တွင် ရိုက်ပါက -> ကျပ်၊ ပဲ၊ ရွေး ပြန်ခွဲပေးမည်
+function calcYewtoKPY128() {
+let totalYew = parseFloat(document.getElementById('res128_yew').value) || 0;
+
+if (totalYew <= 0) {
+document.getElementById('st128_k').value = '';
+document.getElementById('st128_p').value = '';
+document.getElementById('st128_y').value = '';
+return;
+}
+
+let k = Math.floor(totalYew / 128);
+let remainY = totalYew - (k * 128);
+let p = Math.floor(remainY / 8);
+let y = remainY - (p * 8);
+
+document.getElementById('st128_k').value = k || '';
+document.getElementById('st128_p').value = p || '';
+document.getElementById('st128_y').value = y ? parseFloat(y.toFixed(3)) : '';
+}
+
+/* ----------------၁၂၀ ရွေး အတွက် တွက်ချက်မှုများ---------------- */
+// ကျပ်၊ ပဲ၊ ရွေး ရိုက်ပါက -> စုစုပေါင်း ရွေး ထွက်မည်
+function calcKPYtoYew120() {
+let k = parseFloat(document.getElementById('st120_k').value) || 0;
+let p = parseFloat(document.getElementById('st120_p').value) || 0;
+let y = parseFloat(document.getElementById('st120_y').value) || 0;
+
+let totalYew = (k * 120) + (p * 7.5) + y;
+document.getElementById('res120_yew').value = totalYew ? parseFloat(totalYew.toFixed(3)) : '';
+}
+
+// ရွေး အကွက်တွင် ရိုက်ပါက -> ကျပ်၊ ပဲ၊ ရွေး ပြန်ခွဲပေးမည်
+function calcYewtoKPY120() {
+let totalYew = parseFloat(document.getElementById('res120_yew').value) || 0;
+
+if (totalYew <= 0) {
+document.getElementById('st120_k').value = '';
+document.getElementById('st120_p').value = '';
+document.getElementById('st120_y').value = '';
+return;
+}
+
+let k = Math.floor(totalYew / 120);
+let remainY = totalYew - (k * 120);
+let p = Math.floor(remainY / 7.5);
+let y = remainY - (p * 7.5);
+
+document.getElementById('st120_k').value = k || '';
+document.getElementById('st120_p').value = p || '';
+document.getElementById('st120_y').value = y ? parseFloat(y.toFixed(3)) : '';
+}
+
+/* ----------------အခြား မူလ Function များ---------------- */
+function calcSpToWasteRate() {
+let sp = parseFloat(document.getElementById('spInput').value);
+
+if (isNaN(sp)) {
+document.getElementById('spResult').value = 'Auto တွက်မည်';
+return;
+}
+
+let divisor = 0;
+
+if (sp >= 14.95 && sp <= 15.44) divisor = 20.10;
+else if (sp >= 15.45 && sp <= 15.94) divisor = 20.00;
+else if (sp >= 15.95 && sp <= 16.44) divisor = 19.90;
+else if (sp >= 16.45 && sp <= 16.94) divisor = 19.80;
+else if (sp >= 16.95 && sp <= 17.44) divisor = 19.70;
+else if (sp >= 17.45 && sp <= 17.94) divisor = 19.60;
+else if (sp >= 17.95 && sp <= 18.44) divisor = 19.50;
+else if (sp >= 18.45 && sp <= 18.94) divisor = 19.40;
+else if (sp >= 18.95 && sp <= 19.20) divisor = 19.25;
+
+if (divisor > 0) {
+let result = ((sp / divisor * 128) - 128) - 0.5;
+document.getElementById('spResult').value = result.toFixed(3) + ' ရွေး';
+} else {
+document.getElementById('spResult').value = 'သတ်မှတ်ဘောင်ပြင်ပ';
+}
+}
+
+function calcWasteRateFromNet() {
+let std = document.getElementById('gramStandard').value;
+let yewPerKyat = (std === "1") ? 120 : 128;
+let yewPerPe = (std === "1") ? 7.5 : 8;
+
+let rawK = parseFloat(document.getElementById('kyat').value) || 0;
+let rawP = parseFloat(document.getElementById('pe').value) || 0;
+let rawY = parseFloat(document.getElementById('yew').value) || 0;
+let totalRawYew = (rawK * yewPerKyat) + (rawP * yewPerPe) + rawY;
+
+let netK = parseFloat(document.getElementById('netK').value) || 0;
+let netP = parseFloat(document.getElementById('netP').value) || 0;
+let netY = parseFloat(document.getElementById('netY').value) || 0;
+let totalNetYew = (netK * yewPerKyat) + (netP * yewPerPe) + netY;
+
+if (totalRawYew > 0 && totalNetYew > 0 && totalRawYew >= totalNetYew) {
+let diffYew = totalRawYew - totalNetYew;
+let calculatedWasteRate = (diffYew * yewPerKyat) / totalRawYew;
+
+document.getElementById('wasteYew').value = calculatedWasteRate.toFixed(3);
+autoCalcRawPrice();
+calculateAll();
+}
+}
+
+function autoCalcRawPrice() {
+let goldPrice = parseFloat(document.getElementById('goldPrice').value) || 0;
+let wasteYew = parseFloat(document.getElementById('wasteYew').value) || 0;
+let std = document.getElementById('gramStandard').value;
+let yewPerKyat = (std === "1") ? 120 : 128;
+
+if (goldPrice > 0 && wasteYew >= 0) {
+let calculatedRawPrice = goldPrice - ((goldPrice / yewPerKyat) * wasteYew);
+document.getElementById('rawPrice').value = Math.round(calculatedRawPrice);
+}
+}
+
+function formatYewToKPY(totalYew, yewPerKyat, yewPerPe) {
+if (totalYew <= 0) return "၀ကျပ် ၀ပဲ ၀ရွေး";
+let k = Math.floor(totalYew / yewPerKyat);
+let remainY = totalYew - (k * yewPerKyat);
+let p = Math.floor(remainY / yewPerPe);
+let y = remainY - (p * yewPerPe);
+
+let formattedY = parseFloat(y.toFixed(2));
+return k + "ကျပ် " + p + "ပဲ " + formattedY + "ရွေး";
+}
+
+function gramToKPY(totalGram, targetStd) {
+let totalYew = 0;
+let yewPerKyat = 128;
+let yewPerPe = 8;
+
+if (targetStd === 1) {
+yewPerKyat = 120;
+yewPerPe = 7.5;
+totalYew = totalGram * (120 / 16.6);
+} else if (targetStd === 2) {
+totalYew = totalGram * (128 / 16.606);
+} else if (targetStd === 3) {
+totalYew = totalGram * (128 / 16.329325);
+}
+
+return formatYewToKPY(totalYew, yewPerKyat, yewPerPe);
+}
+
+function calculateFromGram() {
+let gVal = parseFloat(document.getElementById('inputGram').value) || 0;
+let std = document.getElementById('gramStandard').value;
+
+let yewPerKyat = (std === "1") ? 120 : 128;
+let yewPerPe = (std === "1") ? 7.5 : 8;
+
+let totalYew = 0;
+if (std === "1") totalYew = gVal * (120 / 16.6);
+else if (std === "2") totalYew = gVal * (16.606 ? (128 / 16.606) : 0);
+else if (std === "3") totalYew = gVal * (128 / 16.329325);
+
+let k = Math.floor(totalYew / yewPerKyat);
+let remainY = totalYew - (k * yewPerKyat);
+let p = Math.floor(remainY / yewPerPe);
+let y = remainY - (p * yewPerPe);
+
+document.getElementById('kyat').value = k || '';
+document.getElementById('pe').value = p || '';
+document.getElementById('yew').value = y ? y.toFixed(2) : '';
+
+calculateAll();
+}
+
+function calculateFromKPY() {
+let k = parseFloat(document.getElementById('kyat').value) || 0;
+let p = parseFloat(document.getElementById('pe').value) || 0;
+let y = parseFloat(document.getElementById('yew').value) || 0;
+let std = document.getElementById('gramStandard').value;
+
+let yewPerKyat = (std === "1") ? 120 : 128;
+let yewPerPe = (std === "1") ? 7.5 : 8;
+
+let totalYew = (k * yewPerKyat) + (p * yewPerPe) + y;
+let totalG = 0;
+
+if (std === "1") totalG = totalYew * (16.6 / 120);
+else if (std === "2") totalG = totalYew * (16.606 / 128);
+else if (std === "3") totalG = totalYew * (16.329325 / 128);
+
+document.getElementById('inputGram').value = totalG ? totalG.toFixed(3) : '';
+
+calculateAll();
+}
+
+function calculateAll() {
+let k = parseFloat(document.getElementById('kyat').value) || 0;
+let p = parseFloat(document.getElementById('pe').value) || 0;
+let y = parseFloat(document.getElementById('yew').value) || 0;
+
+let rawPrice = parseFloat(document.getElementById('rawPrice').value) || 0;
+let goldPrice = parseFloat(document.getElementById('goldPrice').value) || 0;
+let wasteYewRate = parseFloat(document.getElementById('wasteYew').value) || 0;
+
+let std = document.getElementById('gramStandard').value;
+
+let yewPerKyat = (std === "1") ? 120 : 128;
+let yewPerPe = (std === "1") ? 7.5 : 8;
+
+let rawTotalYew = (k * yewPerKyat) + (p * yewPerPe) + y;
+let rawKyatEquivalent = rawTotalYew / yewPerKyat;
+
+let totalWasteYew = rawKyatEquivalent * wasteYewRate;
+let netTotalYew = Math.max(0, rawTotalYew - totalWasteYew);
+
+document.getElementById('netKpy').innerText = formatYewToKPY(netTotalYew, yewPerKyat, yewPerPe);
+
+let mainG = 0;
+if (std === "1") {
+mainG = netTotalYew * (16.6 / 120);
+document.getElementById('cLabel1').innerText = "16.606g";
+document.getElementById('cKpy1').innerText = gramToKPY(mainG, 2);
+document.getElementById('cGram1').innerText = "(" + mainG.toFixed(2) + "g)";
+
+document.getElementById('cLabel2').innerText = "16.329g";
+document.getElementById('cKpy2').innerText = gramToKPY(mainG, 3);
+document.getElementById('cGram2').innerText = "(" + mainG.toFixed(2) + "g)";
+
+} else if (std === "2") {
+mainG = netTotalYew * (16.606 / 128);
+document.getElementById('cLabel1').innerText = "16.6g";
+document.getElementById('cKpy1').innerText = gramToKPY(mainG, 1);
+document.getElementById('cGram1').innerText = "(" + mainG.toFixed(2) + "g)";
+
+document.getElementById('cLabel2').innerText = "16.329g";
+document.getElementById('cKpy2').innerText = gramToKPY(mainG, 3);
+document.getElementById('cGram2').innerText = "(" + mainG.toFixed(2) + "g)";
+
+} else if (std === "3") {
+mainG = netTotalYew * (16.329325 / 128);
+document.getElementById('cLabel1').innerText = "16.6g";
+document.getElementById('cKpy1').innerText = gramToKPY(mainG, 1);
+document.getElementById('cGram1').innerText = "(" + mainG.toFixed(2) + "g)";
+
+document.getElementById('cLabel2').innerText = "16.606g";
+document.getElementById('cKpy2').innerText = gramToKPY(mainG, 2);
+document.getElementById('cGram2').innerText = "(" + mainG.toFixed(2) + "g)";
+}
+
+document.getElementById('mainGram').innerText = mainG.toFixed(3) + ' g';
+
+let rawTotalPrice = rawKyatEquivalent * rawPrice;
+let netKyatEquivalent = netTotalYew / yewPerKyat;
+let netTotalPrice = netKyatEquivalent * goldPrice;
+
+document.getElementById('rawTotalPrice').innerText = Math.round(rawTotalPrice).toLocaleString() + ' ကျပ်';
+document.getElementById('mainPrice').innerText = Math.round(netTotalPrice).toLocaleString() + ' ကျပ်';
+}
+</script>
+
+</body>
+</html>
